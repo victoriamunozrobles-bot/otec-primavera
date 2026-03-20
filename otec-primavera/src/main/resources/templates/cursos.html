@@ -1,41 +1,114 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
     <meta charset="UTF-8" />
-    <title>Gestión de Cursos - OTEC Primavera</title>
+    <title>Catálogo de Cursos - OTEC Primavera</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
   </head>
-  <body>
-    <h1>Catálogo de Cursos OTEC</h1>
+  <body class="d-flex flex-column min-vh-100 p-4">
+    <div class="container">
+      <div
+        class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-secondary"
+      >
+        <h2 class="text-pastel-green">Catálogo Académico</h2>
 
-    <div>
-      <a th:href="@{/cursos/nuevo}">+ Crear Nuevo Curso</a>
+        <div class="d-flex align-items-center gap-3">
+          <span class="text-muted"
+            >Hola, <strong sec:authentication="name">Usuario</strong></span
+          >
+
+          <form th:action="@{/logout}" method="POST">
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+              Cerrar Sesión
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="mb-4" sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/cursos/nuevo}" class="btn btn-pastel-green"
+          >+ Registrar Nuevo Curso</a
+        >
+      </div>
+
+      <div class="card card-dark shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+          <table class="table table-dark table-hover mb-0">
+            <thead style="background-color: #1a1d20">
+              <tr>
+                <th class="py-3 px-4 text-pastel-green">Código</th>
+                <th class="py-3 px-4 text-pastel-green">Programa Educativo</th>
+                <th class="py-3 px-4 text-pastel-green">Instructor</th>
+                <th class="py-3 px-4 text-pastel-green">Horas</th>
+                <th class="py-3 px-4 text-pastel-green text-center">Estado</th>
+                <th
+                  class="py-3 px-4 text-pastel-green text-center"
+                  sec:authorize="hasRole('ADMIN')"
+                >
+                  Gestión
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:if="${#lists.isEmpty(cursos)}">
+                <td colspan="6" class="text-center py-4 text-muted">
+                  No hay programas registrados en este momento.
+                </td>
+              </tr>
+
+              <tr th:each="c : ${cursos}">
+                <td class="py-3 px-4 fw-bold" th:text="${c.codigo}"></td>
+                <td class="py-3 px-4" th:text="${c.nombre}"></td>
+                <td class="py-3 px-4 text-muted" th:text="${c.instructor}"></td>
+                <td
+                  class="py-3 px-4"
+                  th:text="${c.duracionHoras} + ' hrs'"
+                ></td>
+
+                <td class="py-3 px-4 text-center">
+                  <span
+                    th:if="${c.activo}"
+                    class="badge bg-success rounded-pill text-dark"
+                    style="background-color: #a8e6cf !important"
+                    >Activo</span
+                  >
+                  <span
+                    th:unless="${c.activo}"
+                    class="badge bg-secondary rounded-pill"
+                    >Inactivo</span
+                  >
+                </td>
+
+                <td
+                  class="py-3 px-4 text-center"
+                  sec:authorize="hasRole('ADMIN')"
+                >
+                  <a
+                    th:href="@{/cursos/editar/{id}(id=${c.idCurso})}"
+                    class="btn btn-sm btn-outline-warning me-1"
+                    >✏️</a
+                  >
+                  <a
+                    th:href="@{/cursos/eliminar/{id}(id=${c.idCurso})}"
+                    class="btn btn-sm btn-outline-danger"
+                    onclick="
+                      return confirm('¿Seguro que deseas eliminar este curso?');
+                    "
+                    >🗑️</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-
-    <br />
-
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Código</th>
-          <th>Nombre</th>
-          <th>Instructor</th>
-          <th>Horas</th>
-          <th>Categoría</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="c : ${cursos}">
-          <td th:text="${c.idCurso}"></td>
-          <td th:text="${c.codigo}"></td>
-          <td th:text="${c.nombre}"></td>
-          <td th:text="${c.instructor}"></td>
-          <td th:text="${c.duracionHoras}"></td>
-          <td th:text="${c.categoria}"></td>
-          <td th:text="${c.activo ? 'Activo' : 'Inactivo'}"></td>
-        </tr>
-      </tbody>
-    </table>
   </body>
 </html>
