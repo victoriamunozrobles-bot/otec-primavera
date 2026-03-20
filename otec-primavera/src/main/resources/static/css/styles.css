@@ -30,3 +30,11 @@ body {
 .text-pastel-green {
   color: #a8e6cf;
 }
+
+.text-muted-green {
+  color: #b0c5be;
+}
+
+.form-label {
+  color: #b0c5be;
+}
