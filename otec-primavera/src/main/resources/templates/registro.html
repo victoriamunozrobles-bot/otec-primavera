@@ -7,37 +7,7 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <style>
-      body {
-        background-color: #212529;
-        color: #f8f9fa;
-      }
-      .card-dark {
-        background-color: #2b3035;
-        border: 1px solid #495057;
-      }
-      .btn-pastel-green {
-        background-color: #a8e6cf;
-        color: #1a1a1a;
-        font-weight: bold;
-        border: none;
-      }
-      .btn-pastel-green:hover {
-        background-color: #8cdbbd;
-        color: #1a1a1a;
-      }
-      .form-control {
-        background-color: #343a40;
-        color: white;
-        border: 1px solid #495057;
-      }
-      .form-control:focus {
-        background-color: #343a40;
-        color: white;
-        border-color: #a8e6cf;
-        box-shadow: 0 0 0 0.25rem rgba(168, 230, 207, 0.25);
-      }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
   </head>
   <body class="d-flex align-items-center justify-content-center vh-100">
     <div class="container" style="max-width: 450px">
