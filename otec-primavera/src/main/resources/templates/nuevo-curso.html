@@ -1,0 +1,50 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Crear Curso - OTEC</title>
+  </head>
+  <body>
+    <h1>Registrar Nuevo Curso</h1>
+
+    <form th:action="@{/cursos}" th:object="${curso}" method="POST">
+      <input type="hidden" th:field="*{idCurso}" />
+
+      <div>
+        <label>Código del Curso:</label>
+        <input type="text" th:field="*{codigo}" required />
+      </div>
+
+      <div>
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required />
+      </div>
+
+      <div>
+        <label>Instructor:</label>
+        <input type="text" th:field="*{instructor}" required />
+      </div>
+
+      <div>
+        <label>Duración (Horas):</label>
+        <input type="number" th:field="*{duracionHoras}" required />
+      </div>
+
+      <div>
+        <label>Categoría:</label>
+        <input type="text" th:field="*{categoria}" required />
+      </div>
+
+      <div>
+        <label>¿Está activo?:</label>
+        <input type="checkbox" th:field="*{activo}" />
+      </div>
+
+      <br />
+      <div>
+        <button type="submit">Guardar Curso en Bodega</button>
+        <a th:href="@{/cursos}">Cancelar y Volver</a>
+      </div>
+    </form>
+  </body>
+</html>

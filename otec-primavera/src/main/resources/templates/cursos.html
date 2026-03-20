@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestión de Cursos - OTEC Primavera</title>
+  </head>
+  <body>
+    <h1>Catálogo de Cursos OTEC</h1>
+
+    <div>
+      <a th:href="@{/cursos/nuevo}">+ Crear Nuevo Curso</a>
+    </div>
+
+    <br />
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Instructor</th>
+          <th>Horas</th>
+          <th>Categoría</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="c : ${cursos}">
+          <td th:text="${c.idCurso}"></td>
+          <td th:text="${c.codigo}"></td>
+          <td th:text="${c.nombre}"></td>
+          <td th:text="${c.instructor}"></td>
+          <td th:text="${c.duracionHoras}"></td>
+          <td th:text="${c.categoria}"></td>
+          <td th:text="${c.activo ? 'Activo' : 'Inactivo'}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
