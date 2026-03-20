@@ -1,0 +1,28 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registro - OTEC Primavera</title>
+  </head>
+  <body>
+    <h1>Crear una cuenta nueva</h1>
+
+    <form th:action="@{/registro}" th:object="${usuario}" method="POST">
+      <div>
+        <label>Nombre de Usuario (RUT o Email):</label>
+        <input type="text" th:field="*{username}" required />
+      </div>
+
+      <div>
+        <label>Contraseña:</label>
+        <input type="password" th:field="*{password}" required />
+      </div>
+
+      <br />
+      <button type="submit">Registrarme</button>
+    </form>
+
+    <br />
+    <a th:href="@{/login}">Ya tengo cuenta, ir al ingreso normal</a>
+  </body>
+</html>
