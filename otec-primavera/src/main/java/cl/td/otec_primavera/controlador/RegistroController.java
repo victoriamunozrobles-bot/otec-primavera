@@ -29,4 +29,9 @@ public class RegistroController {
 
         return "redirect:/login?exito";
     }
+
+    @GetMapping("/login")
+    public String mostrarLogin() {
+        return "login";
+    }
 }

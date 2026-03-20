@@ -21,9 +21,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/registro").permitAll()
+                        .requestMatchers("/registro", "/login", "/css/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login
+                        .loginPage("/login")
                         .permitAll()
                         .defaultSuccessUrl("/cursos", true))
                 .logout(logout -> logout
