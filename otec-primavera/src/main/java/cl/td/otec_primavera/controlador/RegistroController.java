@@ -1,6 +1,6 @@
 package cl.td.otec_primavera.controlador;
 
-import cl.td.otec_primavera.modelo.Usuario;
+import cl.td.otec_primavera.dto.UsuarioRegistroDTO;
 import cl.td.otec_primavera.servicio.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +19,18 @@ public class RegistroController {
 
     @GetMapping("/registro")
     public String mostrarFormularioRegistro(Model model) {
-        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("registroDTO", new UsuarioRegistroDTO());
         return "registro";
     }
 
     @PostMapping("/registro")
-    public String procesarRegistro(@ModelAttribute("usuario") Usuario usuario) {
-        usuarioService.registrarNuevoUsuario(usuario);
+    public String procesarRegistro(@ModelAttribute("registroDTO") UsuarioRegistroDTO dto) {
 
+        if (!dto.getPassword().equals(dto.getRepetirPassword())) {
+            return "redirect:/registro?error=passwords";
+        }
+
+        usuarioService.registrarNuevoUsuario(dto);
         return "redirect:/login?exito";
     }
 
