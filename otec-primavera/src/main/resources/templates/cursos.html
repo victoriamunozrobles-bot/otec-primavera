@@ -68,7 +68,14 @@
 
               <tr th:each="c : ${cursos}">
                 <td class="py-3 px-4 fw-bold" th:text="${c.codigo}"></td>
-                <td class="py-3 px-4" th:text="${c.nombre}"></td>
+                <td class="py-3 px-4">
+                  <a
+                    th:href="@{/cursos/detalle/{id}(id=${c.idCurso})}"
+                    class="text-pastel-green text-decoration-none fw-bold"
+                    style="font-size: 1.1rem"
+                    th:text="${c.nombre}"
+                  ></a>
+                </td>
                 <td
                   class="py-3 px-4 text-muted-green"
                   th:text="${c.instructor}"

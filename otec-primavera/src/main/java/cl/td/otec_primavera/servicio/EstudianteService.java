@@ -25,4 +25,8 @@ public class EstudianteService {
         }
         estudianteRepository.save(estudiante);
     }
+
+    public Estudiante obtenerEstudiantePorId(Integer id) {
+        return estudianteRepository.findById(id).orElse(null);
+    }
 }

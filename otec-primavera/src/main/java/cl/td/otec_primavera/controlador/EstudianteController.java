@@ -1,5 +1,6 @@
 package cl.td.otec_primavera.controlador;
 
+import cl.td.otec_primavera.modelo.Curso;
 import cl.td.otec_primavera.modelo.Estudiante;
 import cl.td.otec_primavera.servicio.CursoService;
 import cl.td.otec_primavera.servicio.EstudianteService;
@@ -35,6 +36,34 @@ public class EstudianteController {
     @PostMapping
     public String guardarEstudiante(@ModelAttribute("estudiante") Estudiante estudiante) {
         estudianteService.guardarEstudiante(estudiante);
+        return "redirect:/estudiantes";
+    }
+
+    @GetMapping("/matricular/{id}")
+    public String mostrarFormularioMatricula(@PathVariable("id") Integer id, Model model) {
+        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(id);
+
+        model.addAttribute("estudiante", estudiante);
+        model.addAttribute("listaCursos", cursoService.listarCursos());
+
+        return "matricular";
+    }
+
+    @PostMapping("/matricular/{id}")
+    public String procesarMatricula(@PathVariable("id") Integer idEstudiante,
+            @RequestParam(value = "cursoId", required = false) Integer idCurso) {
+
+        Estudiante estudiante = estudianteService.obtenerEstudiantePorId(idEstudiante);
+
+        if (idCurso != null) {
+            Curso curso = cursoService.obtenerCursoPorId(idCurso);
+            estudiante.setCurso(curso);
+        } else {
+            estudiante.setCurso(null);
+        }
+
+        estudianteService.guardarEstudiante(estudiante);
+
         return "redirect:/estudiantes";
     }
 }
