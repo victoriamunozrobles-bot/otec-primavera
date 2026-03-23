@@ -1,50 +1,158 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
   <head>
     <meta charset="UTF-8" />
-    <title>Crear Curso - OTEC</title>
+    <title>Crear Curso - OTEC Primavera</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
   </head>
-  <body>
-    <h1>Registrar Nuevo Curso</h1>
+  <body
+    class="d-flex align-items-center justify-content-center min-vh-100 py-5"
+  >
+    <div class="container" style="max-width: 600px">
+      <div class="card card-dark shadow-lg p-4 rounded-4 border-secondary">
+        <div class="text-center mb-4 border-bottom border-secondary pb-3">
+          <h3 class="text-pastel-green">Registrar Programa Académico</h3>
+          <p class="text-muted">Completa los datos del nuevo curso</p>
+        </div>
 
-    <form th:action="@{/cursos}" th:object="${curso}" method="POST">
-      <input type="hidden" th:field="*{idCurso}" />
+        <form
+          th:action="@{/cursos}"
+          th:object="${curso}"
+          method="POST"
+          class="needs-validation"
+          novalidate
+        >
+          <input type="hidden" th:field="*{idCurso}" />
 
-      <div>
-        <label>Código del Curso:</label>
-        <input type="text" th:field="*{codigo}" required />
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label fw-bold">Código</label>
+              <input
+                type="text"
+                th:field="*{codigo}"
+                class="form-control"
+                placeholder="Ej: JAV-01"
+                required
+                minlength="3"
+                maxlength="10"
+              />
+              <div class="invalid-feedback">
+                Ingresa un código válido (3-10 caracteres).
+              </div>
+            </div>
+
+            <div class="col-md-8 mb-3">
+              <label class="form-label fw-bold">Nombre del Curso</label>
+              <input
+                type="text"
+                th:field="*{nombre}"
+                class="form-control"
+                placeholder="Ej: Desarrollo Web"
+                required
+                minlength="5"
+              />
+              <div class="invalid-feedback">
+                El nombre debe tener al menos 5 caracteres.
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Instructor Asignado</label>
+            <select th:field="*{instructor}" class="form-select" required>
+              <option value="" disabled selected>
+                Selecciona un docente del listado...
+              </option>
+              <option
+                th:each="inst : ${listaInstructores}"
+                th:value="${inst.nombre}"
+                th:text="${inst.nombre}"
+              ></option>
+            </select>
+            <div class="invalid-feedback">Debes seleccionar un instructor.</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Duración (Horas)</label>
+              <input
+                type="number"
+                th:field="*{duracionHoras}"
+                class="form-control"
+                placeholder="Ej: 120"
+                required
+                min="1"
+                max="1000"
+              />
+              <div class="invalid-feedback">
+                La duración debe ser entre 1 y 1000 horas.
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold">Categoría</label>
+              <input
+                type="text"
+                th:field="*{categoria}"
+                class="form-control"
+                placeholder="Ej: Programación"
+                required
+              />
+              <div class="invalid-feedback">La categoría es obligatoria.</div>
+            </div>
+          </div>
+
+          <div class="mb-4 form-check form-switch mt-2">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              th:field="*{activo}"
+              id="activoSwitch"
+              checked
+            />
+            <label class="form-check-label text-muted-green" for="activoSwitch"
+              >El curso estará activo y visible inmediatamente</label
+            >
+          </div>
+
+          <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-pastel-green flex-grow-1 py-2">
+              💾 Guardar Curso
+            </button>
+            <a th:href="@{/cursos}" class="btn btn-outline-secondary py-2 px-4"
+              >Cancelar</a
+            >
+          </div>
+        </form>
       </div>
+    </div>
 
-      <div>
-        <label>Nombre:</label>
-        <input type="text" th:field="*{nombre}" required />
-      </div>
-
-      <div>
-        <label>Instructor:</label>
-        <input type="text" th:field="*{instructor}" required />
-      </div>
-
-      <div>
-        <label>Duración (Horas):</label>
-        <input type="number" th:field="*{duracionHoras}" required />
-      </div>
-
-      <div>
-        <label>Categoría:</label>
-        <input type="text" th:field="*{categoria}" required />
-      </div>
-
-      <div>
-        <label>¿Está activo?:</label>
-        <input type="checkbox" th:field="*{activo}" />
-      </div>
-
-      <br />
-      <div>
-        <button type="submit">Guardar Curso en Bodega</button>
-        <a th:href="@{/cursos}">Cancelar y Volver</a>
-      </div>
-    </form>
+    <script>
+      (() => {
+        "use strict";
+        const forms = document.querySelectorAll(".needs-validation");
+        Array.from(forms).forEach((form) => {
+          form.addEventListener(
+            "submit",
+            (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add("was-validated");
+            },
+            false,
+          );
+        });
+      })();
+    </script>
   </body>
 </html>

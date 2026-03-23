@@ -38,3 +38,21 @@ body {
 .form-label {
   color: #b0c5be;
 }
+
+.form-control::placeholder {
+  color: #8fa09a;
+  opacity: 1;
+}
+
+.form-select {
+  background-color: #343a40;
+  color: white;
+  border: 1px solid #495057;
+}
+
+.form-select:focus {
+  background-color: #343a40;
+  color: white;
+  border-color: #a8e6cf;
+  box-shadow: 0 0 0 0.25rem rgba(168, 230, 207, 0.25);
+}
