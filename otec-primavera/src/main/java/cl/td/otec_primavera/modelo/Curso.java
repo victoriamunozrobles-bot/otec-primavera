@@ -1,6 +1,7 @@
 package cl.td.otec_primavera.modelo;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "cursos")
@@ -14,6 +15,17 @@ public class Curso {
     private String codigo;
     private String nombre;
     private String instructor;
+
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+    private java.util.List<Modulo> modulos;
+
+    public java.util.List<Modulo> getModulos() {
+        return modulos;
+    }
+
+    public void setModulos(java.util.List<Modulo> modulos) {
+        this.modulos = modulos;
+    }
 
     @Column(name = "duracion_horas")
     private Integer duracionHoras;
