@@ -37,4 +37,22 @@ public class CursoController {
         cursoService.guardarCurso(curso);
         return "redirect:/cursos";
     }
+
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Integer id, Model model) {
+        Curso cursoExistente = cursoService.obtenerCursoPorId(id);
+
+        model.addAttribute("curso", cursoExistente);
+
+        model.addAttribute("listaInstructores", instructorRepository.findAll());
+
+        return "nuevo-curso";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarCurso(@PathVariable("id") Integer id) {
+        cursoService.eliminarCurso(id);
+
+        return "redirect:/cursos";
+    }
 }

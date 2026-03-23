@@ -18,7 +18,10 @@
     <div class="container" style="max-width: 600px">
       <div class="card card-dark shadow-lg p-4 rounded-4 border-secondary">
         <div class="text-center mb-4 border-bottom border-secondary pb-3">
-          <h3 class="text-pastel-green">Registrar Programa Académico</h3>
+          <h3
+            class="text-pastel-green"
+            th:text="${curso.idCurso == null ? 'Registrar Programa Académico' : 'Editar Programa Académico'}"
+          ></h3>
           <p class="text-muted">Completa los datos del nuevo curso</p>
         </div>
 
