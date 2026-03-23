@@ -32,9 +32,12 @@
         </div>
       </div>
 
-      <div class="mb-4" sec:authorize="hasRole('ADMIN')">
-        <a th:href="@{/cursos/nuevo}" class="btn btn-pastel-green"
+      <div class="mb-4 d-flex gap-3" sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/cursos/nuevo}" class="btn btn-pastel-green fw-bold"
           >+ Registrar Nuevo Curso</a
+        >
+        <a th:href="@{/estudiantes}" class="btn btn-outline-light"
+          >👥 Panel de Estudiantes</a
         >
       </div>
 
