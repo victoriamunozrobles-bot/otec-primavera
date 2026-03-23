@@ -55,4 +55,13 @@ public class CursoController {
 
         return "redirect:/cursos";
     }
+
+    @GetMapping("/detalle/{id}")
+    public String verDetalleCurso(@PathVariable("id") Integer id, Model model) {
+        Curso curso = cursoService.obtenerCursoPorId(id);
+
+        model.addAttribute("curso", curso);
+
+        return "curso-detalle";
+    }
 }
