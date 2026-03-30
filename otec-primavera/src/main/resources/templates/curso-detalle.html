@@ -142,58 +142,32 @@
             </ul>
 
             <div class="tab-content" id="cursoTabsContent">
-              <div
-                class="tab-pane fade show active text-light"
-                id="modulos"
-                role="tabpanel"
-              >
-                <div
-                  class="d-flex justify-content-between align-items-center mb-3"
-                >
+              <div class="tab-pane fade show active text-light" id="modulos" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-3">
                   <h5 class="text-pastel-green mb-0">Plan de Estudios</h5>
-                  <button
-                    sec:authorize="hasRole('ADMIN')"
-                    class="btn btn-sm btn-outline-light"
-                  >
-                    + Añadir Módulo
-                  </button>
+                  
+                  <a sec:authorize="hasRole('ADMIN')" th:href="@{/modulos/nuevo/{id}(id=${curso.idCurso})}" class="btn btn-sm btn-outline-light">+ Añadir Módulo</a>
                 </div>
-
-                <div
-                  th:if="${#lists.isEmpty(curso.modulos)}"
-                  class="alert bg-dark border-secondary text-muted"
-                >
+                
+                <div th:if="${#lists.isEmpty(curso.modulos)}" class="alert bg-dark border-secondary text-muted-green">
                   <em>Aún no hay unidades registradas para este programa.</em>
                 </div>
 
                 <div class="list-group list-group-flush rounded-3">
-                  <div
-                    th:each="m, iterStat : ${curso.modulos}"
-                    class="list-group-item bg-dark text-light border-secondary mb-2 rounded p-3 shadow-sm"
-                  >
-                    <div
-                      class="d-flex w-100 justify-content-between align-items-start"
-                    >
-                      <h6
-                        class="fw-bold text-pastel-green mb-2"
-                        th:text="'Unidad ' + ${iterStat.count} + ': ' + ${m.titulo}"
-                      ></h6>
+                  <div th:each="m, iterStat : ${curso.modulos}" class="list-group-item bg-dark text-light border-secondary mb-2 rounded p-3 shadow-sm">
+                    <div class="d-flex w-100 justify-content-between align-items-start">
+                      <h6 class="fw-bold text-pastel-green mb-2" th:text="'Unidad ' + ${iterStat.count} + ': ' + ${m.titulo}"></h6>
+                      
                       <div sec:authorize="hasRole('ADMIN')">
-                        <button class="btn btn-sm text-warning px-1 py-0">
-                          ✏️
-                        </button>
-                        <button class="btn btn-sm text-danger px-1 py-0">
-                          🗑️
-                        </button>
+                        <a th:href="@{/modulos/editar/{id}(id=${m.idModulo})}" class="btn btn-sm text-warning px-1 py-0 text-decoration-none">✏️</a>
+                        <a th:href="@{/modulos/eliminar/{id}(id=${m.idModulo})}" onclick="return confirm('¿Seguro que deseas eliminar esta unidad?')" class="btn btn-sm text-danger px-1 py-0 text-decoration-none">🗑️</a>
                       </div>
+                      
                     </div>
-                    <p
-                      class="mb-0 text-muted-green"
-                      style="font-size: 0.95rem"
-                      th:text="${m.descripcion}"
-                    ></p>
+                    <p class="mb-0 text-muted-green" style="font-size: 0.95rem;" th:text="${m.descripcion}"></p>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>
