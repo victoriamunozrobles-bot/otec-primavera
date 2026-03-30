@@ -19,11 +19,13 @@ public class PortalEstudianteController {
     @GetMapping("/mi-portal")
     public String verMiPortal(Principal principal, Model model) {
         String emailUsuarioLogueado = principal.getName();
-
         Estudiante estudiante = estudianteService.obtenerEstudiantePorEmail(emailUsuarioLogueado);
 
-        model.addAttribute("estudiante", estudiante);
+        if (estudiante == null) {
+            return "redirect:/login?error=sin_ficha";
+        }
 
+        model.addAttribute("estudiante", estudiante);
         return "mi-portal";
     }
 }
