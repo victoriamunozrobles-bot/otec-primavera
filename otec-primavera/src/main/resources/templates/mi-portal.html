@@ -1,0 +1,106 @@
+<!doctype html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mi Portal Académico - OTEC Primavera</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  </head>
+  <body class="d-flex flex-column min-vh-100 p-4">
+    <div class="container" style="max-width: 900px">
+      <div
+        class="d-flex justify-content-between align-items-center mb-5 pb-3 border-bottom border-secondary"
+      >
+        <div>
+          <h2 class="text-pastel-green mb-0">Mi Portal Académico</h2>
+          <p class="text-muted-green mb-0">
+            Bienvenido/a, <span th:text="${estudiante.nombre}"></span>
+          </p>
+        </div>
+
+        <div class="d-flex gap-3">
+          <a th:href="@{/cursos}" class="btn btn-outline-light btn-sm"
+            >Ver Catálogo Completo</a
+          >
+          <form th:action="@{/logout}" method="POST">
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+              Cerrar Sesión
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div th:if="${estudiante.curso != null}">
+        <h4 class="text-light mb-4">Programa en curso</h4>
+
+        <div
+          class="card card-dark shadow-lg rounded-4 border-secondary overflow-hidden"
+        >
+          <div class="row g-0">
+            <div
+              class="col-md-3 d-flex align-items-center justify-content-center"
+              style="background-color: #343a40; border-right: 1px solid #495057"
+            >
+              <span style="font-size: 5rem">🎓</span>
+            </div>
+
+            <div class="col-md-9 p-4">
+              <span
+                class="badge bg-secondary mb-2"
+                th:text="${estudiante.curso.codigo}"
+              ></span>
+              <h3
+                class="text-pastel-green"
+                th:text="${estudiante.curso.nombre}"
+              ></h3>
+
+              <div class="mb-3">
+                <span class="text-muted-green me-3"
+                  >👨‍🏫 Instructor:
+                  <span
+                    class="text-light"
+                    th:text="${estudiante.curso.instructor}"
+                  ></span
+                ></span>
+                <span class="text-muted-green"
+                  >⏱️
+                  <span
+                    class="text-light"
+                    th:text="${estudiante.curso.duracionHoras} + ' Horas'"
+                  ></span
+                ></span>
+              </div>
+
+              <a
+                th:href="@{/cursos/detalle/{id}(id=${estudiante.curso.idCurso})}"
+                class="btn btn-pastel-green px-4 py-2 mt-2 fw-bold"
+                >Ir a la Sala de Clases ➡️</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        th:unless="${estudiante.curso != null}"
+        class="card card-dark shadow-sm rounded-4 p-5 text-center border-secondary"
+      >
+        <span style="font-size: 4rem; display: block; margin-bottom: 1rem"
+          >⏳</span
+        >
+        <h4 class="text-pastel-green">Matrícula en proceso</h4>
+        <p class="text-muted-green mx-auto" style="max-width: 500px">
+          Tu cuenta ha sido creada exitosamente, pero aún no tienes un programa
+          académico asignado. Contacta a la secretaría o espera a que el
+          administrador valide tu inscripción.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

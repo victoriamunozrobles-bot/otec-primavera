@@ -39,6 +39,11 @@
         <a th:href="@{/estudiantes}" class="btn btn-outline-light"
           >👥 Panel de Estudiantes</a
         >
+        <div class="mb-4" sec:authorize="hasRole('ESTUDIANTE')">
+          <a th:href="@{/mi-portal}" class="btn btn-pastel-green fw-bold"
+            >🎓 Ir a Mi Portal Académico</a
+          >
+        </div>
       </div>
 
       <div class="card card-dark shadow-sm rounded-4 overflow-hidden">

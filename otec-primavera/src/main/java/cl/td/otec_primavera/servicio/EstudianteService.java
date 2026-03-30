@@ -29,4 +29,8 @@ public class EstudianteService {
     public Estudiante obtenerEstudiantePorId(Integer id) {
         return estudianteRepository.findById(id).orElse(null);
     }
+
+    public Estudiante obtenerEstudiantePorEmail(String email) {
+        return estudianteRepository.findByEmail(email).orElse(null);
+    }
 }
