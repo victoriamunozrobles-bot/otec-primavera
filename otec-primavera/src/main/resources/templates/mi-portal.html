@@ -87,6 +87,71 @@
         </div>
       </div>
 
+      <h4 class="text-light mb-4 mt-5">Mis Calificaciones</h4>
+
+      <div
+        class="card card-dark shadow-sm rounded-4 overflow-hidden border-secondary mb-5"
+      >
+        <div class="table-responsive">
+          <table class="table table-dark table-hover mb-0">
+            <thead style="background-color: #1a1d20">
+              <tr>
+                <th class="py-3 px-4 text-pastel-green">Unidad Académica</th>
+                <th class="py-3 px-4 text-pastel-green text-center">
+                  Calificación
+                </th>
+                <th class="py-3 px-4 text-pastel-green">
+                  Comentarios del Docente
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:if="${#lists.isEmpty(estudiante.curso.modulos)}">
+                <td colspan="3" class="text-center py-4 text-muted">
+                  El programa aún no tiene unidades de estudio registradas.
+                </td>
+              </tr>
+
+              <tr th:each="m, iter : ${estudiante.curso.modulos}">
+                <td
+                  class="py-3 px-4 fw-bold text-light"
+                  th:text="'Unidad ' + ${iter.count} + ': ' + ${m.titulo}"
+                ></td>
+
+                <th:block th:with="notaEncontrada=false">
+                  <th:block
+                    th:each="nota : ${notas}"
+                    th:if="${nota.modulo.idModulo == m.idModulo}"
+                  >
+                    <td class="py-3 px-4 text-center">
+                      <span
+                        class="badge fs-6 text-dark"
+                        th:classappend="${nota.nota < 4.0 ? 'bg-danger text-white' : ''}"
+                        th:style="${nota.nota >= 4.0 ? 'background-color: #A8E6CF !important;' : ''}"
+                        th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"
+                      ></span>
+                    </td>
+                    <td
+                      class="py-3 px-4 text-muted-green fst-italic"
+                      th:text="${nota.observaciones}"
+                    ></td>
+                  </th:block>
+
+                  <th:block
+                    th:unless="${#lists.size(notas.?[modulo.idModulo == #root.m.idModulo]) > 0}"
+                  >
+                    <td class="py-3 px-4 text-center text-muted">--</td>
+                    <td class="py-3 px-4 text-muted">
+                      <em>Aún no evaluado</em>
+                    </td>
+                  </th:block>
+                </th:block>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div
         th:unless="${estudiante.curso != null}"
         class="card card-dark shadow-sm rounded-4 p-5 text-center border-secondary"

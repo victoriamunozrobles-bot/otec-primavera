@@ -2,6 +2,7 @@ package cl.td.otec_primavera.controlador;
 
 import cl.td.otec_primavera.modelo.Estudiante;
 import cl.td.otec_primavera.servicio.EstudianteService;
+import cl.td.otec_primavera.servicio.EvaluacionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +12,11 @@ import java.security.Principal;
 public class PortalEstudianteController {
 
     private final EstudianteService estudianteService;
+    private final EvaluacionService evaluacionService;
 
-    public PortalEstudianteController(EstudianteService estudianteService) {
+    public PortalEstudianteController(EstudianteService estudianteService, EvaluacionService evaluacionService) {
         this.estudianteService = estudianteService;
+        this.evaluacionService = evaluacionService;
     }
 
     @GetMapping("/mi-portal")
@@ -26,6 +29,11 @@ public class PortalEstudianteController {
         }
 
         model.addAttribute("estudiante", estudiante);
+
+        if (estudiante.getCurso() != null) {
+            model.addAttribute("notas", evaluacionService.obtenerNotasDeEstudiante(estudiante.getIdEstudiante()));
+        }
+
         return "mi-portal";
     }
 }
