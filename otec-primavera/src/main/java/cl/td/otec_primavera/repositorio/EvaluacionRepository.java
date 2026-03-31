@@ -13,4 +13,6 @@ public interface EvaluacionRepository extends JpaRepository<Evaluacion, Integer>
     List<Evaluacion> findByEstudiante_IdEstudiante(Integer idEstudiante);
 
     Optional<Evaluacion> findByEstudiante_IdEstudianteAndModulo_IdModulo(Integer idEstudiante, Integer idModulo);
+
+    List<Evaluacion> findByModulo_Curso_IdCurso(Integer idCurso);
 }
