@@ -6,6 +6,8 @@ import cl.td.otec_primavera.servicio.CursoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import cl.td.otec_primavera.servicio.EstudianteService;
+import cl.td.otec_primavera.servicio.EvaluacionService;
 
 @Controller
 @RequestMapping("/cursos")
@@ -13,10 +15,16 @@ public class CursoController {
 
     private final CursoService cursoService;
     private final InstructorRepository instructorRepository;
+    private final EstudianteService estudianteService;
+    private final EvaluacionService evaluacionService;
 
-    public CursoController(CursoService cursoService, InstructorRepository instructorRepository) {
+    public CursoController(CursoService cursoService, InstructorRepository instructorRepository,
+            EstudianteService estudianteService, EvaluacionService evaluacionService) {
         this.cursoService = cursoService;
         this.instructorRepository = instructorRepository;
+        this.estudianteService = estudianteService;
+        this.evaluacionService = evaluacionService;
+
     }
 
     @GetMapping
@@ -61,7 +69,10 @@ public class CursoController {
         Curso curso = cursoService.obtenerCursoPorId(id);
 
         model.addAttribute("curso", curso);
+        model.addAttribute("alumnosMatriculados", estudianteService.obtenerEstudiantesPorCurso(id));
+        model.addAttribute("todasLasNotas", evaluacionService.obtenerNotasPorCurso(id));
 
         return "curso-detalle";
     }
+
 }
