@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Boletín Académico - OTEC Primavera</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  </head>
+  <body class="d-flex flex-column min-vh-100 p-4">
+    <div class="container" style="max-width: 900px">
+      <div class="mb-4">
+        <a
+          th:href="@{/estudiantes}"
+          class="text-muted-green text-decoration-none"
+          >← Volver al Directorio</a
+        >
+      </div>
+
+      <div
+        class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary"
+      >
+        <div>
+          <h2 class="text-pastel-green mb-0">Boletín de Calificaciones</h2>
+          <p
+            class="text-light mb-0 fs-5"
+            th:text="${estudiante.nombre} + ' (RUT: ' + ${estudiante.rut} + ')'"
+          ></p>
+          <span
+            class="badge bg-secondary mt-2"
+            th:text="'Programa: ' + ${curso.nombre}"
+          ></span>
+        </div>
+      </div>
+
+      <div class="list-group rounded-4 shadow-sm">
+        <div
+          th:if="${#lists.isEmpty(modulos)}"
+          class="alert bg-dark border-secondary text-muted text-center"
+        >
+          El programa actual no tiene unidades registradas para calificar.
+        </div>
+
+        <div
+          th:each="m, iter : ${modulos}"
+          class="list-group-item bg-dark text-light border-secondary p-4 mb-3 rounded-4"
+        >
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5
+              class="text-pastel-green mb-0"
+              th:text="'Unidad ' + ${iter.count} + ': ' + ${m.titulo}"
+            ></h5>
+            <a
+              th:href="@{/evaluaciones/calificar/{idEst}/{idMod}(idEst=${estudiante.idEstudiante}, idMod=${m.idModulo})}"
+              class="btn btn-sm btn-outline-light"
+              >✏️ Calificar / Editar</a
+            >
+          </div>
+
+          <div class="card bg-black border-secondary p-3 mt-2 rounded-3">
+            <th:block th:with="notaEncontrada=false">
+              <div
+                th:each="nota : ${notas}"
+                th:if="${nota.modulo.idModulo == m.idModulo}"
+                th:with="notaEncontrada=true"
+              >
+                <div class="d-flex align-items-center gap-4">
+                  <div>
+                    <small class="text-muted-green d-block">Calificación</small>
+                    <span
+                      class="fs-2 fw-bold"
+                      th:classappend="${nota.nota < 4.0 ? 'text-danger' : 'text-pastel-green'}"
+                      th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"
+                    ></span>
+                  </div>
+                  <div class="border-start border-secondary ps-4">
+                    <small class="text-muted-green d-block"
+                      >Retroalimentación del Docente</small
+                    >
+                    <span
+                      class="text-light fst-italic"
+                      th:text="${nota.observaciones}"
+                    ></span>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                th:unless="${#lists.size(notas.?[modulo.idModulo == #root.m.idModulo]) > 0}"
+                class="text-muted"
+              >
+                <span class="fs-5">⏳ Pendiente de evaluación</span>
+              </div>
+            </th:block>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

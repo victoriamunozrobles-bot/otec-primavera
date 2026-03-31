@@ -86,9 +86,16 @@
                 <td class="py-3 px-4 text-center">
                   <a
                     th:href="@{/estudiantes/matricular/{id}(id=${e.idEstudiante})}"
-                    class="btn btn-sm btn-outline-info"
-                    title="Asignar Curso"
-                    >🎓 Matricular</a
+                    class="btn btn-sm btn-outline-info me-1"
+                    title="Gestionar Matrícula"
+                    >🎓</a
+                  >
+                  <a
+                    th:if="${e.curso != null}"
+                    th:href="@{/evaluaciones/estudiante/{id}(id=${e.idEstudiante})}"
+                    class="btn btn-sm btn-outline-success"
+                    title="Ver Calificaciones"
+                    >📝 Notas</a
                   >
                 </td>
               </tr>
