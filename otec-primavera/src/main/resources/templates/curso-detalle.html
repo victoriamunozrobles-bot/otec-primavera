@@ -19,9 +19,13 @@
   <body class="d-flex flex-column min-vh-100 p-4">
     <div class="container" style="max-width: 1000px">
       <div class="mb-4">
-        <a th:href="@{/cursos}" class="text-muted-green text-decoration-none"
-          >← Volver al Catálogo</a
-        >
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/cursos}" class="text-muted-green text-decoration-none fw-bold">
+          ← Volver al Catálogo Académico
+        </a>
+        
+        <a sec:authorize="hasRole('ESTUDIANTE')" th:href="@{/mi-portal}" class="text-muted-green text-decoration-none fw-bold">
+          ← Volver a Mi Portal
+        </a>
       </div>
 
       <div
