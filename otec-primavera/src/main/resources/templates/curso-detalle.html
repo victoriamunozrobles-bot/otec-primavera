@@ -173,10 +173,12 @@
                         <td class="fw-bold align-middle" th:text="${est.nombre}"></td>
                         
                         <td th:each="mod : ${curso.modulos}" class="text-center align-middle bg-black">
+                            
                             <th:block th:each="nota : ${todasLasNotas}" th:if="${nota.estudiante.idEstudiante == est.idEstudiante and nota.modulo.idModulo == mod.idModulo}">
                                 <span class="fw-bold fs-6" th:classappend="${nota.nota < 4.0 ? 'text-danger' : 'text-pastel-green'}" th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"></span>
                             </th:block>
-                            <span th:unless="${#lists.size(todasLasNotas.?[estudiante.idEstudiante == #root.est.idEstudiante and modulo.idModulo == #root.mod.idModulo]) > 0}" class="text-muted small">-</span>
+                            
+                            <span th:unless="${#lists.size(todasLasNotas.?[estudiante.idEstudiante == __${est.idEstudiante}__ and modulo.idModulo == __${mod.idModulo}__]) > 0}" class="text-muted small">-</span>
                         </td>
                         
                         <td class="text-center align-middle">

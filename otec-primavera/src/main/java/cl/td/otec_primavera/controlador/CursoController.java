@@ -3,11 +3,11 @@ package cl.td.otec_primavera.controlador;
 import cl.td.otec_primavera.modelo.Curso;
 import cl.td.otec_primavera.repositorio.InstructorRepository;
 import cl.td.otec_primavera.servicio.CursoService;
+import cl.td.otec_primavera.servicio.EstudianteService;
+import cl.td.otec_primavera.servicio.EvaluacionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import cl.td.otec_primavera.servicio.EstudianteService;
-import cl.td.otec_primavera.servicio.EvaluacionService;
 
 @Controller
 @RequestMapping("/cursos")
@@ -24,7 +24,6 @@ public class CursoController {
         this.instructorRepository = instructorRepository;
         this.estudianteService = estudianteService;
         this.evaluacionService = evaluacionService;
-
     }
 
     @GetMapping
@@ -49,30 +48,25 @@ public class CursoController {
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable("id") Integer id, Model model) {
         Curso cursoExistente = cursoService.obtenerCursoPorId(id);
-
         model.addAttribute("curso", cursoExistente);
-
         model.addAttribute("listaInstructores", instructorRepository.findAll());
-
         return "nuevo-curso";
     }
 
     @GetMapping("/eliminar/{id}")
     public String eliminarCurso(@PathVariable("id") Integer id) {
         cursoService.eliminarCurso(id);
-
         return "redirect:/cursos";
     }
 
     @GetMapping("/detalle/{id}")
     public String verDetalleCurso(@PathVariable("id") Integer id, Model model) {
         Curso curso = cursoService.obtenerCursoPorId(id);
-
         model.addAttribute("curso", curso);
+
         model.addAttribute("alumnosMatriculados", estudianteService.obtenerEstudiantesPorCurso(id));
         model.addAttribute("todasLasNotas", evaluacionService.obtenerNotasPorCurso(id));
 
         return "curso-detalle";
     }
-
 }
