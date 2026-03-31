@@ -33,4 +33,8 @@ public class EstudianteService {
     public Estudiante obtenerEstudiantePorEmail(String email) {
         return estudianteRepository.findByEmail(email).orElse(null);
     }
+
+    public List<Estudiante> obtenerEstudiantesPorCurso(Integer idCurso) {
+        return estudianteRepository.findByCurso_IdCurso(idCurso);
+    }
 }

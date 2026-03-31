@@ -27,4 +27,8 @@ public class EvaluacionService {
         return evaluacionRepository.findByEstudiante_IdEstudianteAndModulo_IdModulo(idEstudiante, idModulo)
                 .orElse(null);
     }
+
+    public List<Evaluacion> obtenerNotasPorCurso(Integer idCurso) {
+        return evaluacionRepository.findByModulo_Curso_IdCurso(idCurso);
+    }
 }
