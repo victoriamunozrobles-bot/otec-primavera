@@ -26,7 +26,6 @@
         >
           ← Volver al Catálogo Académico
         </a>
-
         <a
           sec:authorize="hasRole('ESTUDIANTE')"
           th:href="@{/mi-portal}"
@@ -151,7 +150,6 @@
                   📝 Evaluaciones
                 </button>
               </li>
-
               <li
                 class="nav-item"
                 role="presentation"
@@ -172,87 +170,6 @@
 
             <div class="tab-content" id="cursoTabsContent">
               <div
-                class="tab-pane fade text-light"
-                id="tab-estudiantes"
-                role="tabpanel"
-                sec:authorize="hasRole('ADMIN')"
-              >
-                <div
-                  class="d-flex justify-content-between align-items-center mb-3"
-                >
-                  <h5 class="text-pastel-green mb-0">Libro de Clases</h5>
-                </div>
-
-                <div class="table-responsive rounded-3 shadow-sm">
-                  <table
-                    class="table table-dark table-hover table-bordered border-secondary mb-0"
-                  >
-                    <thead style="background-color: #1a1d20">
-                      <tr>
-                        <th class="text-pastel-green py-3">Alumno</th>
-                        <th
-                          th:each="mod : ${curso.modulos}"
-                          class="text-center text-muted-green py-3"
-                          th:text="${mod.titulo}"
-                          style="font-size: 0.8rem"
-                        ></th>
-                        <th class="text-center text-pastel-green py-3">
-                          Acción
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr th:if="${#lists.isEmpty(alumnosMatriculados)}">
-                        <td
-                          th:colspan="${#lists.size(curso.modulos) + 2}"
-                          class="text-center text-muted py-4"
-                        >
-                          No hay estudiantes matriculados en este programa.
-                        </td>
-                      </tr>
-
-                      <tr th:each="est : ${alumnosMatriculados}">
-                        <td
-                          class="fw-bold align-middle"
-                          th:text="${est.nombre}"
-                        ></td>
-
-                        <td
-                          th:each="mod : ${curso.modulos}"
-                          class="text-center align-middle bg-black"
-                        >
-                          <th:block
-                            th:each="nota : ${todasLasNotas}"
-                            th:if="${nota.estudiante.idEstudiante == est.idEstudiante and nota.modulo.idModulo == mod.idModulo}"
-                          >
-                            <span
-                              class="fw-bold fs-6"
-                              th:classappend="${nota.nota < 4.0 ? 'text-danger' : 'text-pastel-green'}"
-                              th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"
-                            ></span>
-                          </th:block>
-
-                          <span
-                            th:if="${#lists.isEmpty(todasLasNotas.?[estudiante.idEstudiante == #root.est.idEstudiante and modulo.idModulo == #root.mod.idModulo])}"
-                            class="text-muted small"
-                            >-</span
-                          >
-                        </td>
-
-                        <td class="text-center align-middle">
-                          <a
-                            th:href="@{/evaluaciones/estudiante/{id}(id=${est.idEstudiante})}"
-                            class="btn btn-sm btn-outline-info"
-                            >Ver Ficha</a
-                          >
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div
                 class="tab-pane fade show active text-light"
                 id="modulos"
                 role="tabpanel"
@@ -261,7 +178,6 @@
                   class="d-flex justify-content-between align-items-center mb-3"
                 >
                   <h5 class="text-pastel-green mb-0">Plan de Estudios</h5>
-
                   <a
                     sec:authorize="hasRole('ADMIN')"
                     th:href="@{/modulos/nuevo/{id}(id=${curso.idCurso})}"
@@ -289,7 +205,6 @@
                         class="fw-bold text-pastel-green mb-2"
                         th:text="'Unidad ' + ${iterStat.count} + ': ' + ${m.titulo}"
                       ></h6>
-
                       <div sec:authorize="hasRole('ADMIN')">
                         <a
                           th:href="@{/modulos/editar/{id}(id=${m.idModulo})}"
@@ -336,6 +251,79 @@
                 <h5 class="mb-3 text-pastel-green">Rendimiento y Pruebas</h5>
                 <div class="alert bg-dark border-secondary text-muted">
                   <em>Las fechas de evaluación se publicarán pronto.</em>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade text-light"
+                id="tab-estudiantes"
+                role="tabpanel"
+                sec:authorize="hasRole('ADMIN')"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h5 class="text-pastel-green mb-0">Libro de Clases</h5>
+                </div>
+
+                <div class="table-responsive rounded-3 shadow-sm">
+                  <table
+                    class="table table-dark table-hover table-bordered border-secondary mb-0"
+                  >
+                    <thead style="background-color: #1a1d20">
+                      <tr>
+                        <th class="text-pastel-green py-3">Alumno</th>
+                        <th
+                          th:each="mod : ${curso.modulos}"
+                          class="text-center text-muted-green py-3"
+                          th:text="${mod.titulo}"
+                          style="font-size: 0.8rem"
+                        ></th>
+                        <th class="text-center text-pastel-green py-3">
+                          Acción
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        th:if="${alumnosMatriculados == null or #lists.isEmpty(alumnosMatriculados)}"
+                      >
+                        <td colspan="100" class="text-center text-muted py-4">
+                          No hay estudiantes matriculados en este programa.
+                        </td>
+                      </tr>
+
+                      <tr th:each="est : ${alumnosMatriculados}">
+                        <td
+                          class="fw-bold align-middle"
+                          th:text="${est.nombre}"
+                        ></td>
+
+                        <td
+                          th:each="mod : ${curso.modulos}"
+                          class="text-center align-middle bg-black"
+                        >
+                          <th:block th:each="nota : ${todasLasNotas}">
+                            <span
+                              th:if="${nota.estudiante != null and nota.modulo != null and nota.estudiante.idEstudiante == est.idEstudiante and nota.modulo.idModulo == mod.idModulo}"
+                              class="fw-bold fs-6"
+                              th:classappend="${nota.nota < 4.0 ? 'text-danger' : 'text-pastel-green'}"
+                              th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"
+                            >
+                            </span>
+                          </th:block>
+                        </td>
+
+                        <td class="text-center align-middle">
+                          <a
+                            th:href="@{/evaluaciones/estudiante/{id}(id=${est.idEstudiante})}"
+                            class="btn btn-sm btn-outline-info"
+                            >Ver Ficha</a
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
