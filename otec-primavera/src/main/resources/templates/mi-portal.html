@@ -103,13 +103,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr th:if="${#lists.isEmpty(estudiante.curso.modulos)}">
-                <td colspan="3" class="text-center py-4 text-muted">
+              <tr th:if="${#lists.isEmpty(estudiante.curso)}">
+                <td colspan="3" class="text-center py-4 text-muted-green">
                   El programa aún no tiene unidades de estudio registradas.
                 </td>
               </tr>
 
-              <tr th:each="m, iter : ${estudiante.curso.modulos}">
+              <tr th:each="m, iter : ${estudiante.curso?.modulo}">
                 <td class="py-3 px-4 fw-bold">
                   <a
                     th:href="@{/mi-portal/modulo/{id}(id=${m.idModulo})}"
