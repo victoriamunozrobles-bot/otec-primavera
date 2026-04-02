@@ -113,10 +113,15 @@
               </tr>
 
               <tr th:each="m, iter : ${estudiante.curso.modulos}">
-                <td
-                  class="py-3 px-4 fw-bold text-light"
-                  th:text="'Unidad ' + ${iter.count} + ': ' + ${m.titulo}"
-                ></td>
+                <td class="py-3 px-4 fw-bold">
+                  <a
+                    th:href="@{/mi-portal/modulo/{id}(id=${m.idModulo})}"
+                    class="text-pastel-green text-decoration-none fs-5"
+                    th:text="'Unidad ' + ${iter.count} + ': ' + ${m.titulo}"
+                    title="Entrar a esta unidad"
+                  >
+                  </a>
+                </td>
 
                 <th:block th:with="notaEncontrada=false">
                   <th:block
