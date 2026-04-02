@@ -38,11 +38,11 @@
                 <th class="text-pastel-green py-3 fs-5">
                   Alumnos Matriculados
                 </th>
-                <th:block th:if="${not #lists.isEmpty(curso.modulos)}">
+                <th:block th:if="${not #lists.isEmpty(curso?.modulos)}">
                   <th
-                    th:each="mod : ${curso.modulos}"
+                    th:each="m : ${curso.modulos}"
                     class="text-center text-muted-green py-3"
-                    th:text="${mod.titulo}"
+                    th:text="${m.titulo}"
                     style="min-width: 150px"
                   ></th>
                 </th:block>
@@ -54,6 +54,14 @@
               </tr>
             </thead>
             <tbody>
+              <tr
+                th:if="${alumnosMatriculados == null or #lists.isEmpty(alumnosMatriculados)}"
+              >
+                <td colspan="100" class="text-center text-muted py-5 fs-5">
+                  No hay estudiantes matriculados en este programa.
+                </td>
+              </tr>
+
               <tr th:each="est : ${alumnosMatriculados}">
                 <td
                   class="fw-bold align-middle text-light fs-5"
@@ -62,20 +70,20 @@
 
                 <th:block th:if="${not #lists.isEmpty(curso.modulos)}">
                   <td
-                    th:each="mod : ${curso.modulos}"
+                    th:each="m : ${curso.modulos}"
                     class="text-center align-middle bg-black"
                     style="padding: 0; height: 60px"
                   >
                     <div
-                      th:with="clave=${est.idEstudiante + '_' + mod.idModulo}"
+                      th:with="clave=${est.idEstudiante + '_' + m.idModulo}"
                       class="w-100 h-100"
                     >
                       <div
-                        th:if="${notasTexto.get(clave) == null}"
+                        th:if="${!#maps.containsKey(notasTexto, clave)}"
                         class="d-flex align-items-center justify-content-center w-100 h-100"
                       >
                         <a
-                          th:href="@{/evaluaciones/calificar/{idEst}/{idMod}(idEst=${est.idEstudiante}, idMod=${mod.idModulo})}"
+                          th:href="@{/evaluaciones/calificar/{idEst}/{idMod}(idEst=${est.idEstudiante}, idMod=${m.idModulo})}"
                           class="btn btn-outline-secondary w-100 h-100 d-flex align-items-center justify-content-center rounded-0 border-0"
                         >
                           + Evaluar
@@ -83,18 +91,25 @@
                       </div>
 
                       <div
-                        th:if="${notasTexto.get(clave) != null}"
+                        th:if="${#maps.containsKey(notasTexto, clave)}"
                         class="d-flex align-items-center justify-content-center w-100 h-100"
                       >
                         <a
-                          th:href="@{/evaluaciones/calificar/{idEst}/{idMod}(idEst=${est.idEstudiante}, idMod=${mod.idModulo})}"
+                          th:href="@{/evaluaciones/calificar/{idEst}/{idMod}(idEst=${est.idEstudiante}, idMod=${m.idModulo})}"
                           class="fw-bold fs-4 text-decoration-none d-flex align-items-center justify-content-center w-100 h-100"
                           th:classappend="${notasColor.get(clave)}"
                           th:text="${notasTexto.get(clave)}"
+                          title="Editar calificación"
                         >
                         </a>
                       </div>
                     </div>
+                  </td>
+                </th:block>
+
+                <th:block th:if="${#lists.isEmpty(curso.modulos)}">
+                  <td class="text-center align-middle bg-black text-muted">
+                    -
                   </td>
                 </th:block>
               </tr>
