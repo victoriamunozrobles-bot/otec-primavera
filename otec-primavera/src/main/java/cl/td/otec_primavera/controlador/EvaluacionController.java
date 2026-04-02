@@ -47,12 +47,10 @@ public class EvaluacionController {
 
     @GetMapping("/calificar/{idEstudiante}/{idModulo}")
     public String mostrarFormularioCalificar(@PathVariable("idEstudiante") Integer idEstudiante,
-            @PathVariable("idModulo") Integer idModulo,
-            Model model) {
+            @PathVariable("idModulo") Integer idModulo, Model model) {
 
         Estudiante estudiante = estudianteService.obtenerEstudiantePorId(idEstudiante);
         Modulo modulo = moduloService.obtenerModuloPorId(idModulo);
-
         Evaluacion evaluacion = evaluacionService.obtenerNotaEspecifica(idEstudiante, idModulo);
 
         if (evaluacion == null) {
@@ -68,7 +66,10 @@ public class EvaluacionController {
     @PostMapping("/guardar")
     public String guardarEvaluacion(@ModelAttribute("evaluacion") Evaluacion evaluacion) {
         evaluacionService.guardarEvaluacion(evaluacion);
-        return "redirect:/evaluaciones/estudiante/" + evaluacion.getEstudiante().getIdEstudiante();
-    }
 
+        Modulo moduloReal = moduloService.obtenerModuloPorId(evaluacion.getModulo().getIdModulo());
+        Integer idCurso = moduloReal.getCurso().getIdCurso();
+
+        return "redirect:/cursos/libro-clases/" + idCurso;
+    }
 }

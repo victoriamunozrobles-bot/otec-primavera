@@ -11,10 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      defer
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body class="d-flex flex-column min-vh-100 p-4">
     <div class="container" style="max-width: 1000px">
@@ -23,16 +20,14 @@
           sec:authorize="hasRole('ADMIN')"
           th:href="@{/cursos}"
           class="text-muted-green text-decoration-none fw-bold"
+          >← Volver al Catálogo Académico</a
         >
-          ← Volver al Catálogo Académico
-        </a>
         <a
           sec:authorize="hasRole('ESTUDIANTE')"
           th:href="@{/mi-portal}"
           class="text-muted-green text-decoration-none fw-bold"
+          >← Volver a Mi Portal</a
         >
-          ← Volver a Mi Portal
-        </a>
       </div>
 
       <div
@@ -66,7 +61,6 @@
             <h5 class="text-light border-bottom border-secondary pb-2 mb-3">
               Ficha Técnica
             </h5>
-
             <div class="mb-3">
               <small class="text-muted-green d-block"
                 >Profesor / Instructor</small
@@ -75,14 +69,6 @@
                 >👨‍🏫 <span th:text="${curso.instructor}"></span
               ></span>
             </div>
-
-            <div class="mb-3">
-              <small class="text-muted-green d-block">Categoría</small>
-              <span class="text-light"
-                >📁 <span th:text="${curso.categoria}"></span
-              ></span>
-            </div>
-
             <div class="mb-4">
               <small class="text-muted-green d-block">Duración Total</small>
               <span class="text-light"
@@ -98,8 +84,13 @@
               class="mt-auto pt-3 border-top border-secondary"
             >
               <a
+                th:href="@{/cursos/libro-clases/{id}(id=${curso.idCurso})}"
+                class="btn btn-pastel-green w-100 fw-bold mb-3 fs-5 py-2"
+                >📊 Abrir Libro de Clases</a
+              >
+              <a
                 th:href="@{/cursos/editar/{id}(id=${curso.idCurso})}"
-                class="btn btn-outline-warning w-100 mb-2"
+                class="btn btn-outline-warning w-100"
                 >✏️ Editar Curso</a
               >
             </div>
@@ -114,57 +105,23 @@
               role="tablist"
             >
               <li class="nav-item" role="presentation">
-                <button
+                <a
                   class="nav-link active"
+                  data-bs-toggle="tab"
+                  href="#modulos"
+                  role="tab"
                   style="background-color: #a8e6cf; color: #1a1a1a"
-                  id="modulos-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#modulos"
-                  type="button"
-                  role="tab"
+                  >📚 Módulos</a
                 >
-                  📚 Módulos
-                </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button
+                <a
                   class="nav-link text-pastel-green"
-                  id="material-tab"
                   data-bs-toggle="tab"
-                  data-bs-target="#material"
-                  type="button"
+                  href="#material"
                   role="tab"
+                  >📎 Material de Estudio</a
                 >
-                  📎 Material de Estudio
-                </button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button
-                  class="nav-link text-pastel-green"
-                  id="evaluaciones-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#evaluaciones"
-                  type="button"
-                  role="tab"
-                >
-                  📝 Evaluaciones
-                </button>
-              </li>
-              <li
-                class="nav-item"
-                role="presentation"
-                sec:authorize="hasRole('ADMIN')"
-              >
-                <button
-                  class="nav-link text-pastel-green"
-                  id="estudiantes-tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#tab-estudiantes"
-                  type="button"
-                  role="tab"
-                >
-                  👥 Estudiantes
-                </button>
               </li>
             </ul>
 
@@ -185,14 +142,12 @@
                     >+ Añadir Módulo</a
                   >
                 </div>
-
                 <div
                   th:if="${#lists.isEmpty(curso.modulos)}"
                   class="alert bg-dark border-secondary text-muted-green"
                 >
-                  <em>Aún no hay unidades registradas para este programa.</em>
+                  Aún no hay unidades registradas.
                 </div>
-
                 <div class="list-group list-group-flush rounded-3">
                   <div
                     th:each="m, iterStat : ${curso.modulos}"
@@ -208,18 +163,8 @@
                       <div sec:authorize="hasRole('ADMIN')">
                         <a
                           th:href="@{/modulos/editar/{id}(id=${m.idModulo})}"
-                          class="btn btn-sm text-warning px-1 py-0 text-decoration-none"
+                          class="btn btn-sm text-warning px-1 py-0"
                           >✏️</a
-                        >
-                        <a
-                          th:href="@{/modulos/eliminar/{id}(id=${m.idModulo})}"
-                          onclick="
-                            return confirm(
-                              '¿Seguro que deseas eliminar esta unidad?',
-                            );
-                          "
-                          class="btn btn-sm text-danger px-1 py-0 text-decoration-none"
-                          >🗑️</a
                         >
                       </div>
                     </div>
@@ -231,7 +176,6 @@
                   </div>
                 </div>
               </div>
-
               <div
                 class="tab-pane fade text-light"
                 id="material"
@@ -239,91 +183,7 @@
               >
                 <h5 class="mb-3 text-pastel-green">Recursos Descargables</h5>
                 <div class="alert bg-dark border-secondary text-muted">
-                  <em>No hay archivos adjuntos disponibles por el momento.</em>
-                </div>
-              </div>
-
-              <div
-                class="tab-pane fade text-light"
-                id="evaluaciones"
-                role="tabpanel"
-              >
-                <h5 class="mb-3 text-pastel-green">Rendimiento y Pruebas</h5>
-                <div class="alert bg-dark border-secondary text-muted">
-                  <em>Las fechas de evaluación se publicarán pronto.</em>
-                </div>
-              </div>
-
-              <div
-                class="tab-pane fade text-light"
-                id="tab-estudiantes"
-                role="tabpanel"
-                sec:authorize="hasRole('ADMIN')"
-              >
-                <div
-                  class="d-flex justify-content-between align-items-center mb-3"
-                >
-                  <h5 class="text-pastel-green mb-0">Libro de Clases</h5>
-                </div>
-
-                <div class="table-responsive rounded-3 shadow-sm">
-                  <table
-                    class="table table-dark table-hover table-bordered border-secondary mb-0"
-                  >
-                    <thead style="background-color: #1a1d20">
-                      <tr>
-                        <th class="text-pastel-green py-3">Alumno</th>
-                        <th
-                          th:each="mod : ${curso.modulos}"
-                          class="text-center text-muted-green py-3"
-                          th:text="${mod.titulo}"
-                          style="font-size: 0.8rem"
-                        ></th>
-                        <th class="text-center text-pastel-green py-3">
-                          Acción
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        th:if="${alumnosMatriculados == null or #lists.isEmpty(alumnosMatriculados)}"
-                      >
-                        <td colspan="100" class="text-center text-muted py-4">
-                          No hay estudiantes matriculados en este programa.
-                        </td>
-                      </tr>
-
-                      <tr th:each="est : ${alumnosMatriculados}">
-                        <td
-                          class="fw-bold align-middle"
-                          th:text="${est.nombre}"
-                        ></td>
-
-                        <td
-                          th:each="mod : ${curso.modulos}"
-                          class="text-center align-middle bg-black"
-                        >
-                          <th:block th:each="nota : ${todasLasNotas}">
-                            <span
-                              th:if="${nota.estudiante != null and nota.modulo != null and nota.estudiante.idEstudiante == est.idEstudiante and nota.modulo.idModulo == mod.idModulo}"
-                              class="fw-bold fs-6"
-                              th:classappend="${nota.nota < 4.0 ? 'text-danger' : 'text-pastel-green'}"
-                              th:text="${#numbers.formatDecimal(nota.nota, 1, 1)}"
-                            >
-                            </span>
-                          </th:block>
-                        </td>
-
-                        <td class="text-center align-middle">
-                          <a
-                            th:href="@{/evaluaciones/estudiante/{id}(id=${est.idEstudiante})}"
-                            class="btn btn-sm btn-outline-info"
-                            >Ver Ficha</a
-                          >
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  No hay archivos adjuntos.
                 </div>
               </div>
             </div>
