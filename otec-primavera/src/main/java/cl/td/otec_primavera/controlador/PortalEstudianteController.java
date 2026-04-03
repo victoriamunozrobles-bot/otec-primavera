@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import java.util.List;
 
 import java.security.Principal;
 
@@ -39,7 +40,18 @@ public class PortalEstudianteController {
         model.addAttribute("estudiante", estudiante);
 
         if (estudiante.getCurso() != null) {
-            model.addAttribute("notas", evaluacionService.obtenerNotasDeEstudiante(estudiante.getIdEstudiante()));
+            List<Evaluacion> notas = evaluacionService.obtenerNotasDeEstudiante(estudiante.getIdEstudiante());
+            model.addAttribute("notas", notas);
+
+            int totalModulos = estudiante.getCurso().getModulos().size();
+            long notasIngresadas = notas.stream().filter(n -> n.getNota() != null).count();
+
+            double progreso = totalModulos == 0 ? 0 : (double) notasIngresadas / totalModulos * 100;
+            double promedio = notas.stream().filter(n -> n.getNota() != null).mapToDouble(Evaluacion::getNota).average()
+                    .orElse(0.0);
+
+            model.addAttribute("progresoEstudiante", progreso);
+            model.addAttribute("promedioEstudiante", promedio);
         }
 
         return "mi-portal";

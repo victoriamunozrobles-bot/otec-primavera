@@ -1,7 +1,6 @@
 package cl.td.otec_primavera.modelo;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "cursos")

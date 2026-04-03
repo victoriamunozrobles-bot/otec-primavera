@@ -34,7 +34,13 @@ public class CursoController {
 
     @GetMapping
     public String listarCursos(Model model) {
-        model.addAttribute("cursos", cursoService.listarCursos());
+        List<Curso> cursos = cursoService.listarCursos();
+        model.addAttribute("cursos", cursos);
+
+        model.addAttribute("totalCursos", cursos.size());
+        model.addAttribute("totalEstudiantes", estudianteService.listarEstudiantes().size());
+        model.addAttribute("totalInstructores", instructorRepository.findAll().size());
+
         return "cursos";
     }
 
@@ -68,7 +74,27 @@ public class CursoController {
     @GetMapping("/detalle/{id}")
     public String verDetalleCurso(@PathVariable("id") Integer id, Model model) {
         Curso curso = cursoService.obtenerCursoPorId(id);
+        if (curso == null)
+            return "redirect:/cursos";
+
+        List<Estudiante> alumnos = estudianteService.obtenerEstudiantesPorCurso(id);
+        List<Evaluacion> notas = evaluacionService.obtenerNotasPorCurso(id);
+
+        int totalAlumnos = alumnos.size();
+        int totalModulos = curso.getModulos().size();
+        int totalEvaluacionesPosibles = totalAlumnos * totalModulos;
+
+        long evaluacionesRealizadas = notas.stream().filter(n -> n.getNota() != null).count();
+        double progreso = totalEvaluacionesPosibles == 0 ? 0
+                : (double) evaluacionesRealizadas / totalEvaluacionesPosibles * 100;
+        double promedio = notas.stream().filter(n -> n.getNota() != null).mapToDouble(Evaluacion::getNota).average()
+                .orElse(0.0);
+
         model.addAttribute("curso", curso);
+        model.addAttribute("totalAlumnos", totalAlumnos);
+        model.addAttribute("progresoCurso", progreso);
+        model.addAttribute("promedioCurso", promedio);
+
         return "curso-detalle";
     }
 

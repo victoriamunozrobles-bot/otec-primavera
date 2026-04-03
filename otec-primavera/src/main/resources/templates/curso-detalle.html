@@ -55,6 +55,46 @@
         </div>
       </div>
 
+      <div class="row g-3 mb-4" sec:authorize="hasRole('ADMIN')">
+        <div class="col-md-4">
+          <div
+            class="card bg-dark border-secondary rounded-4 p-3 text-center shadow-sm"
+          >
+            <h3 class="text-light mb-0" th:text="${totalAlumnos}">0</h3>
+            <small class="text-muted-green fw-bold">Alumnos Inscritos</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div
+            class="card bg-dark border-secondary rounded-4 p-3 text-center shadow-sm"
+          >
+            <h3
+              class="text-light mb-0"
+              th:text="${#numbers.formatDecimal(progresoCurso, 1, 0)} + '%'"
+            >
+              0%
+            </h3>
+            <small class="text-muted-green fw-bold"
+              >Avance de Evaluaciones</small
+            >
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div
+            class="card bg-dark border-secondary rounded-4 p-3 text-center shadow-sm"
+          >
+            <h3
+              class="mb-0"
+              th:classappend="${promedioCurso >= 4.0 ? 'text-pastel-green' : (promedioCurso > 0 ? 'text-danger' : 'text-warning')}"
+              th:text="${promedioCurso > 0 ? #numbers.formatDecimal(promedioCurso, 1, 1) : '-'}"
+            >
+              -
+            </h3>
+            <small class="text-muted-green fw-bold">Promedio Global</small>
+          </div>
+        </div>
+      </div>
+
       <div class="row g-4">
         <div class="col-md-4">
           <div class="card card-dark shadow-sm rounded-4 p-4 h-100">

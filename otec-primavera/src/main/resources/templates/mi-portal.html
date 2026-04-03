@@ -79,6 +79,45 @@
                 class="btn btn-pastel-green px-4 py-2 mt-2 fw-bold"
                 >Ir a la Sala de Clases ➡️</a
               >
+              <div class="row g-3 mt-3 border-top border-secondary pt-4">
+                <div class="col-md-7">
+                  <div
+                    class="p-3 rounded-4 shadow-sm"
+                    style="background-color: #1a1d20"
+                  >
+                    <small class="text-muted-green fw-bold d-block mb-2"
+                      >Mi Progreso Académico</small
+                    >
+                    <div
+                      class="progress"
+                      style="height: 25px; background-color: #2b3035"
+                    >
+                      <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        th:style="'width: ' + ${progresoEstudiante} + '%; background-color: #a8e6cf; color: #1a1a1a; font-weight: bold;'"
+                        th:text="${#numbers.formatDecimal(progresoEstudiante, 1, 0)} + '%'"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div
+                    class="p-3 rounded-4 shadow-sm d-flex flex-column justify-content-center align-items-center h-100"
+                    style="background-color: #1a1d20"
+                  >
+                    <small class="text-muted-green fw-bold mb-1"
+                      >Promedio Actual</small
+                    >
+                    <span
+                      class="fs-2 fw-bold"
+                      th:classappend="${promedioEstudiante >= 4.0 ? 'text-pastel-green' : (promedioEstudiante > 0 ? 'text-danger' : 'text-muted')}"
+                      th:text="${promedioEstudiante > 0 ? #numbers.formatDecimal(promedioEstudiante, 1, 1) : 'S/N'}"
+                    >
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -109,7 +148,7 @@
                 </td>
               </tr>
 
-              <tr th:each="m, iter : ${estudiante.curso?.modulo}">
+              <tr th:each="m, iter : ${estudiante.curso?.modulos}">
                 <td class="py-3 px-4 fw-bold">
                   <a
                     th:href="@{/mi-portal/modulo/{id}(id=${m.idModulo})}"
@@ -143,7 +182,7 @@
                     th:unless="${#lists.size(notas.?[modulo.idModulo == #root.m.idModulo]) > 0}"
                   >
                     <td class="py-3 px-4 text-center text-muted">--</td>
-                    <td class="py-3 px-4 text-muted">
+                    <td class="py-3 px-4 text-muted-green">
                       <em>Aún no evaluado</em>
                     </td>
                   </th:block>
