@@ -88,6 +88,39 @@
         </div>
       </div>
 
+      <!-- BUSCADOR DE CURSOS INICIO -->
+      <div class="row mb-3">
+        <div class="col-md-5">
+          <form th:action="@{/cursos}" method="get" class="d-flex">
+            <input
+              type="text"
+              name="buscar"
+              class="form-control text-light me-2"
+              style="background-color: #1a1d20; border-color: #6c757d"
+              placeholder="Buscar curso por nombre..."
+              th:value="${palabraBuscada}"
+            />
+
+            <button
+              type="submit"
+              class="btn btn-outline-success"
+              style="color: #a8e6cf; border-color: #a8e6cf"
+            >
+              Buscar
+            </button>
+
+            <a
+              th:href="@{/cursos}"
+              class="btn btn-outline-secondary ms-2"
+              th:if="${palabraBuscada != null and !palabraBuscada.isEmpty()}"
+            >
+              Limpiar
+            </a>
+          </form>
+        </div>
+      </div>
+      <!-- BUSCADOR DE CURSOS FIN -->
+
       <div class="card card-dark shadow-sm rounded-4 overflow-hidden">
         <div class="table-responsive">
           <table class="table table-dark table-hover mb-0">
@@ -109,7 +142,7 @@
             <tbody>
               <tr th:if="${#lists.isEmpty(cursos)}">
                 <td colspan="6" class="text-center py-4 text-muted">
-                  No hay programas registrados en este momento.
+                  No hay programas registrados que coincidan con la búsqueda.
                 </td>
               </tr>
 

@@ -56,4 +56,11 @@ public class CursoService {
 
         cursoRepository.deleteById(idCurso);
     }
+
+    public List<Curso> buscarCursosPorNombre(String palabraClave) {
+        if (palabraClave != null && !palabraClave.trim().isEmpty()) {
+            return cursoRepository.findByNombreContainingIgnoreCase(palabraClave);
+        }
+        return cursoRepository.findAll();
+    }
 }

@@ -10,6 +10,7 @@ import cl.td.otec_primavera.servicio.EvaluacionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +34,18 @@ public class CursoController {
     }
 
     @GetMapping
-    public String listarCursos(Model model) {
-        List<Curso> cursos = cursoService.listarCursos();
-        model.addAttribute("cursos", cursos);
+    public String listarCursos(@RequestParam(value = "buscar", required = false) String buscar, Model model) {
+        // Llama al nuevo método del servicio que filtra o trae todos si "buscar" es
+        // nulo
+        List<Curso> cursos = cursoService.buscarCursosPorNombre(buscar);
 
-        model.addAttribute("totalCursos", cursos.size());
+        model.addAttribute("cursos", cursos);
+        model.addAttribute("palabraBuscada", buscar); // Mantiene el texto en el input de búsqueda
+
+        // Se mantiene cursoService.listarCursos().size() para que las estadísticas
+        // muestren el total real de cursos en la base de datos, aunque se esté
+        // filtrando.
+        model.addAttribute("totalCursos", cursoService.listarCursos().size());
         model.addAttribute("totalEstudiantes", estudianteService.listarEstudiantes().size());
         model.addAttribute("totalInstructores", instructorRepository.findAll().size());
 
